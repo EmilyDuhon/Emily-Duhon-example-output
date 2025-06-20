@@ -1,0 +1,61 @@
+.batch-form-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #9de6f0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.upload-section {
+  margin-bottom: 1.5rem;
+  float: center;
+}
+
+.upload-section label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  float: center;
+}
+
+input[type="file"] {
+  padding: 6px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #13707D;
+  color: #f6fcfd;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #fd947d;
+  cursor: pointer;
+}
+
+.results {
+  margin-top: 2rem;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.result-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.result-card img {
+  width: 100%;
+  border-radius: 4px;
+}
