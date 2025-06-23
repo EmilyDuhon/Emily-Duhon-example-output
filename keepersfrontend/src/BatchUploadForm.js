@@ -18,33 +18,65 @@ const BatchUploadForm = ({ onUpload }) => {
     setLoading(false);
   };
 
+  const handleFileSelect = (e, setFiles) => {
+    setFiles(Array.from(e.target.files));
+  };
+
   return (
     <div className="batch-form-container">
-      <h2>Upload Folders</h2>
+      <h2>Upload Images</h2>
       <form onSubmit={handleSubmit}>
         <div className="upload-section">
           <label>Reference Images</label>
-          <input
-            type="file"
-            webkitdirectory="true"
-            multiple
-            onChange={e => setReferenceFiles([...e.target.files])}
-          />
+          <div className="button-group">
+            <label className="upload-button">
+              Folder
+              <input
+                type="file"
+                webkitdirectory="true"
+                mozdirectory="true"
+                multiple
+                onChange={(e) => handleFileSelect(e, setReferenceFiles)}
+              />
+            </label>
+            <label className="upload-button">
+              File
+              <input
+                type="file"
+                multiple
+                onChange={(e) => handleFileSelect(e, setReferenceFiles)}
+              />
+            </label>
+          </div>
         </div>
 
         <div className="upload-section">
           <label>Post-clean Images</label>
-          <input
-            type="file"
-            webkitdirectory="true"
-            multiple
-            onChange={e => setPostCleanFiles([...e.target.files])}
-          />
+          <div className="button-group">
+            <label className="upload-button">
+              Folder
+              <input
+                type="file"
+                webkitdirectory="true"
+                mozdirectory="true"
+                multiple
+                onChange={(e) => handleFileSelect(e, setPostCleanFiles)}
+              />
+            </label>
+            <label className="upload-button">
+              File
+              <input
+                type="file"
+                multiple
+                onChange={(e) => handleFileSelect(e, setPostCleanFiles)}
+              />
+            </label>
+          </div>
         </div>
 
-        <button type="submit" disabled={loading}>
+        <submit-button type="submit" disabled={loading}>
           {loading ? 'Processing...' : 'Submit'}
-        </button>
+        </submit-button>
       </form>
     </div>
   );

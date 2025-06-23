@@ -1,66 +1,53 @@
 import React, { useState } from 'react';
+import './BatchUploadForm.css';
 
-import axios from 'axios';
-
-function UploadFolders() {
+const BatchUploadForm = ({ onUpload }) => {
   const [referenceFiles, setReferenceFiles] = useState([]);
-  const [postcleanFiles, setPostcleanFiles] = useState([]);
+  const [postCleanFiles, setPostCleanFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleReferenceChange = (e) => {
-    const files = Array.from(e.target.files);
-    console.log("Reference folder files:", files);
-    setReferenceFiles(files);
-  };
-
-  const handlePostcleanChange = (e) => {
-    const files = Array.from(e.target.files);
-    console.log("Postclean folder files:", files);
-    setPostcleanFiles(files);
-  };
-
-  const handleSubmit = async () => {
-    if (referenceFiles.length !== postcleanFiles.length) {
-      alert("Mismatch in number of reference and postclean images");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (referenceFiles.length !== postCleanFiles.length) {
+      alert("Mismatched number of reference and post-clean files.");
       return;
     }
 
-    for (let i = 0; i < referenceFiles.length; i++) {
-      const formData = new FormData();
-      formData.append("reference", referenceFiles[i]);
-      formData.append("postclean", postcleanFiles[i]);
-
-      try {
-        const res = await axios.post("http://localhost:5000/inspect", formData);
-        console.log("Annotated image:", res.data.annotated_image_url);
-      } catch (err) {
-        console.error("Failed to inspect pair:", err);
-      }
-    }
+    setLoading(true);
+    await onUpload(referenceFiles, postCleanFiles);
+    setLoading(false);
   };
 
   return (
-    <div>
-      <h2>Upload Reference Folder</h2>
-      <input
-        type="file"
-        multiple
-        webkitdirectory="true"
-        directory=""
-        onChange={handleReferenceChange}
-      />
+    <div className="batch-form-container">
+      <h2>Upload Folders</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="upload-section">
+          <label>Reference Images</label>
+          <input
+            type="file"
+            webkitdirectory="true"
+            multiple
+            onChange={e => setReferenceFiles([...e.target.files])}
+          />
+        </div>
 
-      <h2>Upload Post-Clean Folder</h2>
-      <input
-        type="file"
-        multiple
-        webkitdirectory="true"
-        directory=""
-        onChange={handlePostcleanChange}
-      />
+        <div className="upload-section">
+          <label>Post-clean Images</label>
+          <input
+            type="file"
+            webkitdirectory="true"
+            multiple
+            onChange={e => setPostCleanFiles([...e.target.files])}
+          />
+        </div>
 
-      <button onClick={handleSubmit}>Submit for Inspection</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Processing...' : 'Submit'}
+        </button>
+      </form>
     </div>
   );
-}
+};
 
-export default UploadFolders;
+export default BatchUploadForm;
